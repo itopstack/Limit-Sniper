@@ -1117,7 +1117,7 @@ printt("************************************************************************
 
 # Check for version
 #
-version = '2.2.3'
+version = '2.2.3.1'
 printt("YOUR BOT IS CURRENTLY RUNNING VERSION ", version, write_to_log=True)
 check_release()
 
@@ -2904,6 +2904,11 @@ def scan_mempool_private_node(token, methodid):
                                 if token["MINIMUM_LIQUIDITY_IN_DOLLARS"] != 0:
                                     liquidity_check_private_node(token, v1, 1)
 
+                                # Check if bot needs to wait before buy (BUYAFTER_XXX_SECONDS parameter)
+                                if token['BUYAFTER_XXX_SECONDS'] != 0:
+                                    printt_info("Bot will wait", token['BUYAFTER_XXX_SECONDS'], " seconds before buy, as you entered in BUYAFTER_XXX_SECONDS parameter")
+                                    sleep(token['BUYAFTER_XXX_SECONDS'])
+
                                 # Create Tx
                                 tx_condition_1 = routerContract.functions.swapExactETHForTokens(
                                     0,
@@ -2941,7 +2946,12 @@ def scan_mempool_private_node(token, methodid):
                                 # Optional liquidity check
                                 if token["MINIMUM_LIQUIDITY_IN_DOLLARS"] != 0:
                                     liquidity_check_private_node(token, v1, 2)
-                                
+
+                                # Check if bot needs to wait before buy (BUYAFTER_XXX_SECONDS parameter)
+                                if token['BUYAFTER_XXX_SECONDS'] != 0:
+                                    printt_info("Bot will wait", token['BUYAFTER_XXX_SECONDS'], " seconds before buy, as you entered in BUYAFTER_XXX_SECONDS parameter")
+                                    sleep(token['BUYAFTER_XXX_SECONDS'])
+
                                 tx_condition_2 = routerContract.functions.swapExactETHForTokens(
                                     0,
                                     [weth, Web3.toChecksumAddress(input_decoded[1]['tokenB']), tokenAddress],
@@ -2973,6 +2983,11 @@ def scan_mempool_private_node(token, methodid):
                                 # Optional liquidity check
                                 if token["MINIMUM_LIQUIDITY_IN_DOLLARS"] != 0:
                                     liquidity_check_private_node(token, v1, 3)
+
+                                # Check if bot needs to wait before buy (BUYAFTER_XXX_SECONDS parameter)
+                                if token['BUYAFTER_XXX_SECONDS'] != 0:
+                                    printt_info("Bot will wait", token['BUYAFTER_XXX_SECONDS'], " seconds before buy, as you entered in BUYAFTER_XXX_SECONDS parameter")
+                                    sleep(token['BUYAFTER_XXX_SECONDS'])
 
                                 tx_condition_3 = routerContract.functions.swapExactETHForTokens(
                                     0,
