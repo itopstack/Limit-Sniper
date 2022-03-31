@@ -4008,7 +4008,23 @@ def calculate_base_price():
         reserves = pair_contract.functions.getReserves().call()
         basePrice = Decimal((reserves[0] / DECIMALS_STABLES) / (reserves[1] / DECIMALS_ETH))
         printt_debug("WONE PRICE: ", "{:.6f}".format(basePrice))
+
+    elif base_symbol == "CRO":
+        DECIMALS_STABLES = 1000000
+        DECIMALS_ETH = 1000000000000000000
     
+        # USDC 0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48
+    
+        # address = Web3.toChecksumAddress('0x0039f574ee5cc39bdd162e9a88e3eb1f111baf48')
+        # pair_address = fetch_pair2(address, weth, factoryContract)
+    
+        pair_address = '0xa68466208F1A3Eb21650320D2520ee8eBA5ba623'
+    
+        pair_contract = client.eth.contract(address=pair_address, abi=lpAbi)
+        reserves = pair_contract.functions.getReserves().call()
+        basePrice = Decimal((reserves[1] / DECIMALS_STABLES) / (reserves[0] / DECIMALS_ETH))
+        printt_debug("CRO PRICE: ", "{:.6f}".format(basePrice))
+
     else:
         printt_err("Unknown chain... please add it to calculate_base_price")
         basePrice = 0
@@ -5695,7 +5711,8 @@ def analyze_tx(token, tx_hash):
     # decode input data
     try:
         input_decoded = routerContract.decode_function_input(tx['input'])
-    except Exception:
+    except Exception as e:
+        printt_err(e)
         printt("-  Input DECODED:  -------------------------------------------------------------")
         printt_info("There is no 'input' to decode")
         printt("--------------------------------------------------------------------------------")
